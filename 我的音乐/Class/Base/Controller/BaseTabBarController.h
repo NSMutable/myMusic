@@ -7,7 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MusicModel.h"
 
 @interface BaseTabBarController : UITabBarController
+
+- (void)setSongIdArray:(NSMutableArray *)array currentIndex:(NSInteger)index;
+
+@property (nonatomic ,strong) MusicModel *currentMusic;
 
 @end

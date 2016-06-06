@@ -7,6 +7,13 @@
 //
 
 #import "AppDelegate.h"
+#import "MainViewController.h"
+#import "BaseNavigationController.h"
+#import "BaseTabBarController.h"
+#import <AVOSCloud/AVOSCloud.h>
+
+#define AVOSCloudAppID  @"G3ROSsF7zRSA3vHD5zw7mDv1"
+#define AVOSCloudAppKey @"xx0gLOhJsksq4DauasmJrTGf"
 
 @interface AppDelegate ()
 
@@ -16,7 +23,36 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Override point for customization after application launch.
+    self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    self.window.backgroundColor = [UIColor whiteColor];
+    [self.window makeKeyAndVisible];
+    
+    BaseNavigationController *baseNav = [[BaseNavigationController alloc] initWithRootViewController:[[MainViewController alloc] init]];
+    
+    NSArray *tabArray = [NSArray arrayWithObject:baseNav];
+    
+    BaseTabBarController *tab = [[BaseTabBarController alloc] init];
+    tab.viewControllers = tabArray;
+    self.window.rootViewController = tab;
+    
+    
+    //设置AVOSCloud
+    [AVOSCloud setApplicationId:AVOSCloudAppID
+                      clientKey:AVOSCloudAppKey];
+    
+    //统计应用启动情况
+    [AVAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
+    
+#if !TARGET_IPHONE_SIMULATOR
+    [AVOSCloud registerForRemoteNotification];
+#endif
+    
+    // 输出内部日志，发布时记得关闭
+#ifdef DEBUG
+    [AVOSCloud setAllLogsEnabled:YES];
+#endif
+    
+
     return YES;
 }
 

@@ -7,7 +7,16 @@
 //
 
 #import "BaseViewController.h"
+#import "MusicModel.h"
+#import "LrcView.h"
+#import "LrcTool.h"
+#import "PlayMusicTool.h"
+#import "MusicModel.h"
 
 @interface LargeMusicController : BaseViewController
+
+- (void)setplayerItem:(AVPlayerItem *)item musicModel:(MusicModel *)model;
+
+@property (nonatomic ,strong) MusicModel *currentMusic;
 
 @end

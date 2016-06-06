@@ -11,7 +11,7 @@
 #import "SongListDetailModel.h"
 #import "SongListCell.h"
 #import "AppDelegate.h"
-#import "MusicView.h"
+#import "BaseTabBarController.h"
 
 @class NetWorkTool;
 @interface SonglistViewController ()<UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate>
@@ -45,7 +45,6 @@
     [self loadData];
     [self.navigationController.navigationBar setBackgroundImage:[UIImage new]   forBarMetrics:UIBarMetricsDefault];
     self.navigationController.navigationBar.shadowImage = [UIImage new];
-//    self.navigationController.navigationBar.translucent = YES;
     self.navigationController.navigationBar.alpha = 0;
     [self configUI];
 }
@@ -127,7 +126,7 @@
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.leading.and.trailing.equalTo(toolView);
         make.top.equalTo(toolView.mas_bottom);
-        make.height.mas_equalTo(kScreenHeight- 64 - kHeight(45));
+        make.height.mas_equalTo(kScreenHeight- 64 - kHeight(45) - 44);
     }];
 
     self.tableView.showsVerticalScrollIndicator = NO;
@@ -210,9 +209,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    UIWindow *window = [[UIApplication sharedApplication].windows lastObject];
-    MusicView *musicView = (MusicView *)window.rootViewController;
-    [musicView setSongIdArray:self.songIdArray currentIndex:indexPath.row];
+    BaseTabBarController *tab = (BaseTabBarController *)self.tabBarController;
+    [tab setSongIdArray:self.songIdArray currentIndex:indexPath.row];
 }
 
 - (void)loadData {
@@ -241,10 +239,10 @@
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     
     if (scrollView == self.underView) {
-        if (scrollView.contentOffset.y >= (kHeight(215) - 64 - 0.1)) {
+        if (scrollView.contentOffset.y >= (kHeight(215) - 64 - 0.08)) {
             self.navigationController.navigationBar.alpha = 1;
-            self.tableView.contentOffset = CGPointMake(0, scrollView.contentOffset.y - (kHeight(215) - 64 - 0.1));
-            scrollView.contentOffset = CGPointMake(0, (kHeight(215) - 64 - 0.1));
+            self.tableView.contentOffset = CGPointMake(0, scrollView.contentOffset.y - (kHeight(215) - 64 - 0.08));
+            scrollView.contentOffset = CGPointMake(0, (kHeight(215) - 64 - 0.08));
         }else {
             self.navigationController.navigationBar.alpha = 0;
             if (scrollView.contentOffset.y <= 64) {
@@ -254,7 +252,7 @@
         }
     } else if(scrollView == self.tableView){
         
-        if (self.underView.contentOffset.y < (kHeight(215) - 64 - 1)) {
+        if (self.underView.contentOffset.y < (kHeight(215) - 64 - 0.08)) {
             self.underView.contentOffset = CGPointMake(0, self.underView.contentOffset.y + scrollView.contentOffset.y);
             scrollView.contentOffset = CGPointMake(0, 0);
         } else {
